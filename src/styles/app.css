@@ -77,6 +77,17 @@ body.previa {
   opacity: 1;
 }
 
+/* Timer rodando: a linha fica âmbar e cresce conforme o progresso. */
+.entalho[data-contando="true"] .horizonte {
+  left: var(--raio-entalho);
+  transform: none;
+  width: calc((100% - 2 * var(--raio-entalho)) * var(--progresso, 0));
+  min-width: 6px;
+  background: var(--ambar);
+  box-shadow: 0 0 12px 1px rgba(255, 180, 94, 0.55);
+  opacity: 1;
+}
+
 .entalho[data-salvou="true"] .horizonte {
   animation: varrer 700ms var(--saida);
 }
@@ -114,6 +125,24 @@ body.previa {
   font-size: var(--texto-xs);
   letter-spacing: 0.02em;
   color: var(--luar);
+  font-variant-numeric: tabular-nums;
+}
+
+.rotulo-mini {
+  max-width: 130px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--texto-xs);
+  font-weight: 500;
+  color: var(--lilas);
+}
+
+.contagem-mini {
+  font-family: var(--fonte-display);
+  font-weight: 500;
+  font-size: var(--texto-xs);
+  color: var(--ambar);
   font-variant-numeric: tabular-nums;
 }
 
@@ -232,51 +261,159 @@ body.previa {
   font: 500 11.5px / 1 var(--fonte-ui);
 }
 
-/* Lista de notas */
+/* Resposta do assistente, logo abaixo do campo */
 
-.notas h2 {
-  margin: 0 0 6px;
+.pedido {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resposta {
+  margin: 0 2px;
+  min-height: 18px;
+  font-size: var(--texto-xs);
+  color: var(--lilas);
+}
+
+.resposta[data-erro="true"] {
+  color: var(--luar);
+}
+
+/* Alerta de timer ou lembrete: o único bloco âmbar, porque algo acabou de acontecer */
+
+.alerta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 12px 12px 14px;
+  border: 1px solid var(--ambar);
+  border-radius: var(--raio-campo);
+  background: rgba(255, 180, 94, 0.08);
+}
+
+.alerta div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.alerta strong {
+  font-size: var(--texto-md);
+  font-weight: 600;
+}
+
+.alerta span {
+  font-size: var(--texto-xs);
+  color: var(--lilas);
+}
+
+.botao {
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--raio-item);
+  background: var(--violeta);
+  color: var(--luar);
+  font: 600 var(--texto-xs) / 1 var(--fonte-ui);
+  cursor: pointer;
+}
+
+/* Listas: Agora, Tarefas, Notas */
+
+.lista h2 {
+  margin: 0 0 4px;
   font-size: var(--texto-xs);
   font-weight: 500;
   color: var(--lilas);
 }
 
-.notas ul {
+.lista ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
 }
 
-.notas li {
+.lista li {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding: 7px 0;
+  align-items: center;
+  gap: 12px;
+  min-height: 34px;
   font-size: var(--texto-sm);
 }
 
-.notas li + li {
+.lista li + li {
   border-top: 1px solid rgba(187, 166, 232, 0.12);
 }
 
-.notas li span:first-child {
+.lista .texto {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.notas time {
+.lista .valor {
   flex-shrink: 0;
+  font-size: var(--texto-xs);
+  color: var(--lilas);
+  font-variant-numeric: tabular-nums;
+}
+
+.lista .contando {
+  font-family: var(--fonte-display);
+  font-weight: 500;
+  color: var(--ambar);
+}
+
+.remover {
+  width: 24px;
+  height: 24px;
+  margin-right: -4px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--lilas);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.remover:hover {
+  background: var(--ameixa-vidro);
+  color: var(--luar);
+}
+
+.marcar {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1.5px solid var(--lilas);
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.marcar:hover {
+  border-color: var(--violeta);
+  background: rgba(140, 82, 255, 0.25);
+}
+
+.mais {
+  margin: 4px 0 0;
   font-size: var(--texto-xs);
   color: var(--lilas);
 }
 
 .vazio {
-  margin: 0;
+  margin: 0 2px;
   font-size: var(--texto-sm);
+  line-height: 1.45;
   color: var(--lilas);
 }
 

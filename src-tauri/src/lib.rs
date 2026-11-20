@@ -1,3 +1,4 @@
+mod assistant;
 mod notch;
 mod platform;
 
@@ -21,6 +22,29 @@ fn migrations() -> Vec<Migration> {
                 criado_em TEXT NOT NULL DEFAULT (datetime('now'))
               );",
         kind: MigrationKind::Up,
+    },
+    Migration {
+        version: 2,
+        description: "criar_lembretes",
+        sql: "CREATE TABLE IF NOT EXISTS lembretes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                texto TEXT NOT NULL,
+                quando_ms INTEGER NOT NULL,
+                avisado INTEGER NOT NULL DEFAULT 0,
+                criado_em TEXT NOT NULL DEFAULT (datetime('now'))
+              );",
+        kind: MigrationKind::Up,
+    },
+    Migration {
+        version: 3,
+        description: "criar_tarefas",
+        sql: "CREATE TABLE IF NOT EXISTS tarefas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                texto TEXT NOT NULL,
+                feita INTEGER NOT NULL DEFAULT 0,
+                criado_em TEXT NOT NULL DEFAULT (datetime('now'))
+              );",
+        kind: MigrationKind::Up,
     }]
 }
 
@@ -35,6 +59,7 @@ pub fn run() {
                 .add_migrations("sqlite:vertil.db", migrations())
                 .build(),
         )
+        .plugin(tauri_plugin_opener::init())
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
                 .with_handler(move |app, shortcut, event| {
@@ -45,7 +70,13 @@ pub fn run() {
                 .build(),
         )
         .manage(notch::HitRegion::default())
-        .invoke_handler(tauri::generate_handler![notch::set_hit_region])
+        .invoke_handler(tauri::generate_handler![
+            notch::set_hit_region,
+            assistant::interpretar,
+            assistant::listar_comandos,
+            assistant::abrir_site,
+            assistant::abrir_app
+        ])
         .setup(move |app| {
             platform::prepare_app(app);
 

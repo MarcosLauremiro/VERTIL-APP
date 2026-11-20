@@ -51,7 +51,10 @@ Leia antes de mudar algo grande: `docs/especificacao.md` (o produto),
 ## Comandos
 
 - `npm install` — dependências da interface.
-- `npm run dev` — só a interface no navegador (prévia com fundo simulado; `?aberto` força o entalho aberto).
+- `npm run dev` — só a interface no navegador (prévia com fundo simulado; `?aberto` força o entalho
+  aberto, `?demo` preenche com exemplos, `?alerta` mostra um alerta).
+- `cd src-tauri && cargo test` — testes do interpretador. Toda frase nova que o assistente
+  deve entender ganha um teste em `src-tauri/src/assistant/parser.rs`.
 - `npm run tauri dev` — o app nativo completo.
 - `npm run tauri build` — gera o instalador do sistema atual.
 
@@ -59,13 +62,17 @@ Leia antes de mudar algo grande: `docs/especificacao.md` (o produto),
 
 ```
 src/                     interface React
-  App.tsx                entalho: estados recolhido e aberto
+  App.tsx                entalho: estados recolhido e aberto, listas Agora/Tarefas/Notas
+  hooks/useAssistente.ts executa os pedidos; timers, lembretes, alertas
   lib/ambiente.ts        ponte com o núcleo (funciona também fora do Tauri)
-  lib/notas.ts           notas no SQLite
+  lib/assistente.ts      tipos da Intencao e chamadas ao interpretador
+  lib/banco.ts           SQLite (e localStorage na prévia do navegador)
+  lib/notas.ts, lembretes.ts, tarefas.ts   tabelas do banco
   styles/tokens.css      cores, fontes, raios, movimento
 src-tauri/
   src/lib.rs             inicialização, atalho, bandeja, migrações
   src/notch.rs           posição da janela, região clicável, vigia do cursor
+  src/assistant/         interpretador PT-BR (parser, números, cálculo) e definições para a IA
   src/platform/          código específico de cada sistema
   tauri.conf.json        janela transparente sem borda, sempre no topo
 docs/                    especificação, design e fases

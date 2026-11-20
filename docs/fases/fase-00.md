@@ -1,6 +1,6 @@
 # Fase 0: base do app
 
-**Status:** concluída no Mac em 20/11/2026. Falta repetir os testes no Windows e no Linux.
+**Status:** concluída no Mac em 20/11/2026. Os testes no Windows e no Linux ficam para depois.
 
 ## Entregas
 
