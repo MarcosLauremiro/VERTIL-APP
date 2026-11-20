@@ -1,0 +1,298 @@
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--fonte-ui);
+  color: var(--luar);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* Fora do Tauri (navegador), simula uma área de trabalho para revisar o visual. */
+body.previa {
+  background:
+    radial-gradient(120% 80% at 70% 110%, #f0a36b 0%, transparent 55%),
+    linear-gradient(180deg, #2b2147 0%, #5b3f7a 55%, #b0708a 100%);
+}
+
+/* ---------- Entalho ---------- */
+
+.palco {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.entalho {
+  position: relative;
+  width: 236px;
+  height: 38px;
+  background: var(--ameixa-noturna);
+  border-radius: 0 0 var(--raio-entalho) var(--raio-entalho);
+  overflow: hidden;
+  transition:
+    width 420ms var(--mola),
+    height 420ms var(--mola);
+  box-shadow: 0 10px 30px -12px rgba(27, 16, 41, 0.9);
+}
+
+.entalho[data-aberto="true"] {
+  width: 560px;
+  height: var(--altura-aberta, 236px);
+}
+
+/* Linha do horizonte: o único brilho do app. A largura mostra o estado. */
+.horizonte {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 2px;
+  width: 28%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--violeta);
+  opacity: 0.55;
+  box-shadow: 0 0 12px 1px var(--violeta-brilho);
+  transition:
+    width 420ms var(--mola),
+    opacity 300ms var(--saida);
+}
+
+.entalho[data-aberto="true"] .horizonte {
+  width: calc(100% - 2 * var(--raio-entalho));
+  opacity: 1;
+}
+
+.entalho[data-salvou="true"] .horizonte {
+  animation: varrer 700ms var(--saida);
+}
+
+@keyframes varrer {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---------- Estado recolhido ---------- */
+
+.recolhido {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 2px;
+  transition: opacity 180ms var(--saida);
+}
+
+.entalho[data-aberto="true"] .recolhido {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.relogio-mini {
+  font-family: var(--fonte-display);
+  font-weight: 500;
+  font-size: var(--texto-xs);
+  letter-spacing: 0.02em;
+  color: var(--luar);
+  font-variant-numeric: tabular-nums;
+}
+
+.aura {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--violeta);
+  box-shadow: 0 0 10px 2px var(--violeta-brilho);
+}
+
+/* ---------- Estado aberto ---------- */
+
+.aberto {
+  position: absolute;
+  inset: 0 0 auto 0; /* altura definida pelo conteúdo, medida no App */
+  width: 560px;
+  padding: 18px var(--respiro) 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 160ms var(--saida),
+    transform 160ms var(--saida);
+  pointer-events: none;
+}
+
+.entalho[data-aberto="true"] .aberto {
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+  pointer-events: auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.relogio {
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: var(--texto-xl);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.saudacao {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.saudacao strong {
+  font-size: var(--texto-md);
+  font-weight: 600;
+}
+
+.saudacao span {
+  font-size: var(--texto-xs);
+  color: var(--lilas);
+}
+
+/* Campo de comando */
+
+.comando {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 10px 0 14px;
+  background: var(--ameixa-vidro);
+  border: 1px solid var(--ameixa-borda);
+  border-radius: var(--raio-campo);
+  transition: border-color 150ms var(--saida);
+}
+
+.comando:focus-within {
+  border-color: var(--violeta);
+}
+
+.comando input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  color: var(--luar);
+  font: 400 var(--texto-sm) / 1 var(--fonte-ui);
+  user-select: text;
+}
+
+.comando input::placeholder {
+  color: var(--lilas);
+  opacity: 0.8;
+}
+
+.teclas {
+  display: flex;
+  gap: 4px;
+}
+
+.teclas kbd {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  border: 1px solid var(--ameixa-borda);
+  color: var(--lilas);
+  font: 500 11.5px / 1 var(--fonte-ui);
+}
+
+/* Lista de notas */
+
+.notas h2 {
+  margin: 0 0 6px;
+  font-size: var(--texto-xs);
+  font-weight: 500;
+  color: var(--lilas);
+}
+
+.notas ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.notas li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 7px 0;
+  font-size: var(--texto-sm);
+}
+
+.notas li + li {
+  border-top: 1px solid rgba(187, 166, 232, 0.12);
+}
+
+.notas li span:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.notas time {
+  flex-shrink: 0;
+  font-size: var(--texto-xs);
+  color: var(--lilas);
+}
+
+.vazio {
+  margin: 0;
+  font-size: var(--texto-sm);
+  color: var(--lilas);
+}
+
+/* ---------- Acessibilidade ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--violeta);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    animation: none !important;
+  }
+}

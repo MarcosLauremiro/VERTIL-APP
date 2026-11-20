@@ -1,0 +1,30 @@
+/* Tokens do sistema visual "hora violeta". Detalhes em docs/design.md. */
+:root {
+  --ameixa-noturna: #1b1029;
+  --ameixa-vidro: #2a1a40;
+  --ameixa-borda: #3a2756;
+  --violeta: #8c52ff;
+  --violeta-brilho: rgba(140, 82, 255, 0.55);
+  --lilas: #bba6e8;
+  --luar: #f5f0ff;
+  --ambar: #ffb45e;
+
+  --fonte-display: "Unbounded", "Instrument Sans", system-ui, sans-serif;
+  --fonte-ui: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --texto-xs: 12.5px;
+  --texto-sm: 14px;
+  --texto-md: 16px;
+  --texto-lg: 20px;
+  --texto-xl: 30px;
+
+  --raio-entalho: 22px;
+  --raio-campo: 12px;
+  --raio-item: 8px;
+
+  --respiro: 20px;
+
+  /* Mola usada só na abertura e no fechamento do entalho. */
+  --mola: cubic-bezier(0.32, 1.2, 0.5, 1);
+  --saida: cubic-bezier(0.4, 0, 0.2, 1);
+}
