@@ -39,6 +39,15 @@ Leia antes de mudar algo grande: `docs/especificacao.md` (o produto),
 - Liste o que precisa ser testado à mão no Windows, no Mac e no Linux.
 - Atualize este arquivo se uma regra ou estrutura mudou.
 
+## Branches e versões
+
+- `main` = produção. Só recebe código testado, por pull request vindo da `development`. Nunca commitar direto na `main`.
+- `development` = trabalho do dia a dia: testes, atualizações e melhorias. Todo trabalho novo começa aqui.
+- Para lançar uma versão: PR `development` → `main`, aprovar, depois criar a tag `vX.Y.Z` na `main`
+  (o GitHub Actions gera o rascunho de release com os instaladores).
+- Versão do app fica igual em `package.json`, `src-tauri/Cargo.toml` e `src-tauri/tauri.conf.json`.
+- Commits pequenos, mensagem em português no imperativo ("Adiciona timer com nome").
+
 ## Comandos
 
 - `npm install` — dependências da interface.

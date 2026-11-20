@@ -1,12 +1,15 @@
 # Gera os instaladores dos 3 sistemas.
-# - Em todo push na main: compila e guarda os instaladores como artefatos do workflow.
-# - Ao criar uma tag v* (ex.: v0.1.0): cria um rascunho de release com os instaladores.
+# - Push na development ou na main, e pull requests para a main: compila e guarda os
+#   instaladores como artefatos do workflow (aba Actions do GitHub).
+# - Tag v* criada na main (ex.: v0.1.0): cria um rascunho de release com os instaladores.
 name: build
 
 on:
   push:
-    branches: [main]
+    branches: [main, development]
     tags: ["v*"]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
